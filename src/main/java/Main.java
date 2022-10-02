@@ -24,6 +24,7 @@ public class Main {
             Document doc = Jsoup.connect(url).get();
             return doc;
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }
