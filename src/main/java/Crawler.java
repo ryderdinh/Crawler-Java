@@ -15,7 +15,7 @@ public class Crawler {
 
 
     public static void print(String msg, Object... args) {
-        System.out.println(String.format(msg, args));
+        System.out.printf((msg) + "%n", args);
     }
 
     private static String trim(String s, int width) {
@@ -38,6 +38,14 @@ public class Crawler {
         return doc;
     }
 
+    public void getMetaTag() {
+        String description = doc.select("meta[name=description]").get(0).attr("content");
+
+        System.out.println("Meta Description: " + description);
+
+        System.out.println("Meta Keyword : " + doc.select("meta[name=keywords]"));
+    }
+
     public void getMedia() {
         Elements media = doc.select("[src]");
 
@@ -46,7 +54,10 @@ public class Crawler {
             if (src.normalName().equals("img")) {
                 imageLinks.add(src.attr("abs:src"));
                 print(" * %s: <%s> %sx%s (%s)",
-                        src.tagName(), src.attr("abs:src"), src.attr("width"), src.attr("height"),
+                        src.tagName(),
+                        src.attr("abs:src"),
+                        src.attr("width"),
+                        src.attr("height"),
                         trim(src.attr("alt"), 20));
             } else {
                 moreLinks.add(src.attr("abs:src"));
@@ -77,6 +88,7 @@ public class Crawler {
 
     public void getAllData() {
         print("Title: " + getTitle());
+        getMetaTag();
         getMedia();
         getImports();
         getLinks();
